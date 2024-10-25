@@ -1,24 +1,16 @@
 name: Build
 on:
   push:
-    branches: [main]
+    branches:
+      - '**'
   pull_request: {}
 
 jobs:
-  install-criticalup:
-    name: Install CriticalUp
+  install-criticalup-build-run-my-app:
+    name: Install CriticalUp, Install Ferrocene, Build and Run my app
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
-      - name: Make sure Rust stable is installed
-        shell: bash
-        run: |
-          rustup update stable --no-self-update
-          rustup default stable
-
-      - name: Cache Rust dependencies
-        uses: ferrous-systems/shared-github-actions/cache-rust@main
-
       - name: Make sure CriticalUp is installed and available
         shell: bash
         run: |
@@ -27,3 +19,15 @@ jobs:
       - name: Test if CriticalUp is installed
         run: |
           criticalup --help
+
+      - name: Authenticate CriticalUp
+        run: |
+          criticalup auth set ${{ secrets.CRITICALUP_USER_TOKEN }}
+
+      - name: Install Ferrocene toolchain from the project manifest (criticalup.toml)
+        run: |
+          criticalup install
+      
+      - name: Run my app via Ferrocene compiler which was just installed, using CriticalUp
+        run: |
+          criticalup run cargo run
