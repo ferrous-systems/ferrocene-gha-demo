@@ -1,0 +1,29 @@
+name: Build
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+
+jobs:
+  install-criticalup:
+    name: Install CriticalUp
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make sure Rust stable is installed
+        shell: bash
+        run: |
+          rustup update stable --no-self-update
+          rustup default stable
+
+      - name: Cache Rust dependencies
+        uses: ferrous-systems/shared-github-actions/cache-rust@main
+
+      - name: Make sure CriticalUp is installed and available
+        shell: bash
+        run: |
+          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/ferrocene/criticalup/releases/latest/download/criticalup-installer.sh | sh
+
+      - name: Test if CriticalUp is installed
+        run: |
+          criticalup --help
