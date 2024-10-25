@@ -3,5 +3,6 @@ manifest-version = 1
 [products.ferrocene]
 release = "nightly-2024-05-23"
 packages = [
-    "rustc-x86_64-unknown-linux-gnu"
+    "rustc-${rustc-host}",
+    "cargo-${rustc-host}"
 ]
