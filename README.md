@@ -6,7 +6,7 @@ This is a very simple demo.
 
 - Access to a GitHub account where you can create repo(s).
 - Access to [Ferrocene Customer Portal].
-- TL;DR: You can see the [`build.yml`](./.github/workflows/build.yml) file for a fully working sample for this demo project.
+- TL;DR: You can see the [`build.yml`] file for a fully working sample for this demo project.
 
 ## Steps to use Ferrocene in your project
 
@@ -58,7 +58,7 @@ The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in
 
 ### Create a simple GitHub Action
 
-You can see the [`build.yml`](./.github/workflows/build.yml) file for a fully working sample for this demo project.
+You can see the [`build.yml`] file for a fully working sample for this demo project.
 
 - We will use a single job so we don't need to cache anything. The job will have multiple steps.
 - We will showcase only Ubuntu 20.04 in this exercise.
@@ -71,7 +71,7 @@ The [Installing CriticalUp](https://criticalup.ferrocene.dev/install.html) secti
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/ferrocene/criticalup/releases/latest/download/criticalup-installer.sh | sh
 ```
 
-> See the step 'Make sure CriticalUp is installed and available' in [`build.yml`](./.github/workflows/build.yml).
+> See the step 'Make sure CriticalUp is installed and available' in [`build.yml`].
 
 #### Test CriticalUp is installed
 
@@ -81,7 +81,7 @@ The following command does not require a token or authentication and can tell yo
 criticalup --help 
 ```
 
-> See the step 'Test if CriticalUp is installed' in [`build.yml`](./.github/workflows/build.yml).
+> See the step 'Test if CriticalUp is installed' in [`build.yml`].
 
 #### Authenticate CriticalUp
 
@@ -96,7 +96,7 @@ In your GitHub Action you can use the secret now as:
 criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
 ```
 
-> See the step 'Authenticate CriticalUp' in [`build.yml`](./.github/workflows/build.yml).
+> See the step 'Authenticate CriticalUp' in [`build.yml`].
 
 #### Install Ferrocene toolchain
 
@@ -110,7 +110,7 @@ Just running the following command will install the toolchain listed in your pro
 criticalup install
 ```
 
-> See the step 'Install Ferrocene toolchain from the project manifest (criticalup.toml)' in [`build.yml`](./.github/workflows/build.yml).
+> See the step 'Install Ferrocene toolchain from the project manifest (criticalup.toml)' in [`build.yml`].
 
 #### Run your app using CriticalUp
 
@@ -122,7 +122,7 @@ criticalup run cargo run --release
 
 As you can see, you can simply pass `cargo` as a subcommand.
 
-> See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`](./.github/workflows/build.yml).
+> See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`].
 
 ## References
 
@@ -141,3 +141,4 @@ As you can see, you can simply pass `cargo` as a subcommand.
 [Ferrocene documentation]: https://public-docs.ferrocene.dev/main/index.html
 [rustup]: https://rustup.rs/
 [cargo]: https://doc.rust-lang.org/cargo/
+[`build.yml`]: ./.github/workflows/build.yml
