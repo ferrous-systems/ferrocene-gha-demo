@@ -4,5 +4,6 @@ manifest-version = 1
 release = "nightly-2024-05-23"
 packages = [
     "rustc-${rustc-host}",
-    "cargo-${rustc-host}"
+    "cargo-${rustc-host}",
+    "rust-std-${rustc-host}"
 ]
