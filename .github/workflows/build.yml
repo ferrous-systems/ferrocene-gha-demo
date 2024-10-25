@@ -28,6 +28,6 @@ jobs:
         run: |
           criticalup install
       
-      - name: Run my app via Ferrocene compiler which was just installed, using CriticalUp
+      - name: Run my app via Ferrocene and its toolchain
         run: |
           criticalup run cargo run --release
