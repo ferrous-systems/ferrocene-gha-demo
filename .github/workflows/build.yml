@@ -22,7 +22,7 @@ jobs:
 
       - name: Authenticate CriticalUp
         run: |
-          criticalup auth set ${{ secrets.CRITICALUP_USER_TOKEN }}
+          criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
 
       - name: Install Ferrocene toolchain from the project manifest (criticalup.toml)
         run: |
