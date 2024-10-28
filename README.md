@@ -41,9 +41,10 @@ Some highlights about CriticalUp and the project manifest:
 
 ### Get the CriticalUp Token to authenticate
 
-- To install any Ferrocene product/toolchain, you will need to get a token from the [Ferrocene Customer Portal]. This token can be created by you or your organization's liason admin. 
+- To install any Ferrocene product/toolchain, you will need to get a token from the [Ferrocene Customer Portal].
+  This token can be created in your account.
 - The tokens are at the [Ferrocene CriticalUp Tokens] section of the portal.
-  - Once you are on the page, click "New Token" and copy the token. 
+  - Once you are on the page, click "New Token", provide a memorable title for it, and once generated copy the token.
   - The token is only shown once for security.
 
 ### Add the CriticalUp Token to GitHub Action secrets
@@ -58,9 +59,12 @@ The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in
 
 ### Create a simple GitHub Action
 
-You can see the [`build.yml`] file for a fully working sample for this demo project.
+An example of a fully working Github CI workflow file can be found in the workflow file [`build.yml`] of this demo project.
 
-- We will use a single job so we don't need to cache anything. The job will have multiple steps.
+- When no workflow file in your project exists, copy the `build.yml` into the folder `.github/workflows`, otherwise
+  copy the CI job `install-criticalup-build-run-my-app` into your existing workflow file.
+- Adapt the workflow if necessary, for example to compile the project instead of run it.
+- We will use a single job so we don't need to cache anything. The job consists of multiple steps.
 - We will showcase only Ubuntu 20.04 in this exercise.
 
 #### Install CriticalUp
@@ -85,10 +89,10 @@ criticalup --help
 
 #### Authenticate CriticalUp
 
-_This section assumes you have done the following from above:
+**This section assumes you have done the following from above:**
 
 - Get the CriticalUp Token to authenticate
-- Add the CriticalUp Token to GitHub Action secrets_
+- Add the CriticalUp Token to GitHub Action secrets
 
 In your GitHub Action you can use the secret now as:
 
@@ -100,9 +104,9 @@ criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
 
 #### Install Ferrocene toolchain
 
-_This step assumes you have already done the following from above:
+**This step assumes you have already done the following from above:**
 
-- Add a project manifest to your repo_
+- Add a project manifest to your repo
 
 Just running the following command will install the toolchain listed in your project manifest (`criticalup.toml`).
 
