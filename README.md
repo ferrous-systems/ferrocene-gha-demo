@@ -136,7 +136,7 @@ criticalup run cargo generate --git https://github.com/rust-embedded/cortex-m-qu
 
 **Caveat:** This will generate a project directory inside `ferrocene-demo` since we are using a template.
 
-#### Run your app using CriticalUp
+### Run your app using CriticalUp
 
 The following command uses installed Ferrocene:
 
