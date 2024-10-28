@@ -1,6 +1,6 @@
 # Demo: Ferrocene and its toolchain within GitHub Action(s)
 
-This is a very simple demo.
+This is a simplified demo.
 
 ## Prerequisites
 
@@ -10,11 +10,20 @@ This is a very simple demo.
 
 ## Steps to use Ferrocene in your project
 
-Note: This section will assume that you have access to GitHub and already have a Rust project you want to use Ferrocene for.
+### Create a new project directory
 
-### Add a project manifest to your repo
+We will create a brand new project that works with Ferrocene.
+Create a directory where you will have your project files and `cd` into it.
 
-Ferrocene comes with its own toolchain and toolchain manager. Main tool is called [CriticalUp], which is Ferrocene's toolchain manager. 
+```sh
+mkdir ferrocene-demo
+cd ferrocene-demo
+```
+
+### Add the Ferrocene project manifest to `ferrocene-demo` directory
+
+Ferrocene comes with its own toolchain and toolchain manager. The main tool is called
+[CriticalUp], which is Ferrocene's toolchain manager.
 
 Create a file in project root: `criticalup.toml` and paste the following content in it:
 
@@ -32,14 +41,15 @@ packages = [
 
 Some highlights about CriticalUp and the project manifest:
 
-- This is CritalUp project manifest file. It is usually named `criticalup.toml`. CriticalUp tries to find it within your project folder or its parent directory.
-  - You can override this and provide an explicit `--project` flag with path to your own `criticalup.toml` file for your project.
+- This is the CriticalUp project manifest file. It is usually named `criticalup.toml`.
+  CriticalUp tries to find it within your project folder or its parent directory.
+  - You can override this and provide an explicit `--project` flag with a path to your `criticalup.toml` file for your project.
   - `criticalup install --project /path/to/my/manifest/criticalup.toml`.
 - Used to install Ferrocene and its releases for your project, and packages and dependencies for the release (like [rustup]).
 - Also used to build/run your project (like [cargo]).
 - You can use `-${rustc-host}` suffix to automatically have CriticalUp fill the current architecture triple.
 
-### Get the CriticalUp Token to authenticate
+### Get the CriticalUp Token to authenticate: get your token
 
 - To install any Ferrocene product/toolchain, you will need to get a token from the [Ferrocene Customer Portal].
   This token can be created in your account.
@@ -47,27 +57,7 @@ Some highlights about CriticalUp and the project manifest:
   - Once you are on the page, click "New Token", provide a memorable title for it, and once generated copy the token.
   - The token is only shown once for security.
 
-### Add the CriticalUp Token to GitHub Action secrets
-
-The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in your GitHub repo's Settings.
-
-- Go to 'Settings' tab of your GitHub repo.
-- Click 'Secrets and variables'.
-- Click 'Actions'.
-- Click 'New repository secret'.
-- Add Name as `CRITICALUP_TOKEN` and past the token from [Ferrocene Customer Portal] in the 'Secret' text area.
-
-### Create a simple GitHub Action
-
-An example of a fully working Github CI workflow file can be found in the workflow file [`build.yml`] of this demo project.
-
-- When no workflow file in your project exists, copy the `build.yml` into the folder `.github/workflows`, otherwise
-  copy the CI job `install-criticalup-build-run-my-app` into your existing workflow file.
-- Adapt the workflow if necessary, for example to compile the project instead of run it.
-- We will use a single job so we don't need to cache anything. The job consists of multiple steps.
-- We will showcase only Ubuntu 20.04 in this exercise.
-
-#### Install CriticalUp
+### Install CriticalUp
 
 The [Installing CriticalUp](https://criticalup.ferrocene.dev/install.html) section of the [Criticalup documentation] says to run:
 
@@ -75,9 +65,9 @@ The [Installing CriticalUp](https://criticalup.ferrocene.dev/install.html) secti
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/ferrocene/criticalup/releases/latest/download/criticalup-installer.sh | sh
 ```
 
-> See the step 'Make sure CriticalUp is installed and available' in [`build.yml`].
+> For GitHub Actions: See the step 'Make sure CriticalUp is installed and available' in [`build.yml`].
 
-#### Test CriticalUp is installed
+### Test CriticalUp is installed
 
 The following command does not require a token or authentication and can tell you available subcommands for CriticalUp.
 
@@ -85,9 +75,9 @@ The following command does not require a token or authentication and can tell yo
 criticalup --help 
 ```
 
-> See the step 'Test if CriticalUp is installed' in [`build.yml`].
+> For GitHub Actions: See the step 'Test if CriticalUp is installed' in [`build.yml`].
 
-#### Authenticate CriticalUp
+### Authenticate CriticalUp
 
 **This section assumes you have done the following from above:**
 
@@ -100,23 +90,53 @@ In your GitHub Action you can use the secret now as:
 criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
 ```
 
-> See the step 'Authenticate CriticalUp' in [`build.yml`].
+> For GitHub Actions: See the step 'Authenticate CriticalUp' in [`build.yml`].
 
-#### Install Ferrocene toolchain
+### Install Ferrocene toolchain
 
 **This step assumes you have already done the following from above:**
 
 - Add a project manifest to your repo
 
-Just running the following command will install the toolchain listed in your project manifest (`criticalup.toml`).
+Running the following command will install the toolchain listed in your project manifest (`criticalup.toml`).
 
 ```shell
 criticalup install
 ```
 
-> See the step 'Install Ferrocene toolchain from the project manifest (criticalup.toml)' in [`build.yml`].
+> For GitHub Actions: See the step 'Install Ferrocene toolchain from the project manifest (criticalup.toml)' in [`build.yml`].
 
-#### Run your app using CriticalUp
+### Create new binary project
+
+Once the toolchain is installed, you will have `rustc`, `cargo`, and `rust-std` available in the toolchain.
+
+We will run a command to create a new binary project:
+
+```sh
+criticalup run cargo init
+```
+
+or explicitly passing `--project` manifest:
+
+```sh
+criticalup run --project criticalup.toml cargo init
+```
+
+This will initialize a new project in the directory `ferrocene-demo`.
+Note how we pass `cargo init` to the `criticalup run` command.
+
+### Alternatively create new embedded project
+
+**Note:** We will assume this embedded project is for ARM Cortex-M microcontrollers
+and will use the [template from rust-embedded project](https://github.com/rust-embedded/cortex-m-quickstart).
+
+```sh
+criticalup run cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
+```
+
+**Caveat:** This will generate a project directory inside `ferrocene-demo` since we are using a template.
+
+### Run your app using CriticalUp
 
 The following command uses installed Ferrocene:
 
@@ -124,9 +144,43 @@ The following command uses installed Ferrocene:
 criticalup run cargo run --release
 ```
 
-As you can see, you can simply pass `cargo` as a subcommand.
+As you can see, you can pass `cargo` as a subcommand.
 
-> See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`].
+> For GitHub Actions: See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`].
+
+## GitHub settings for Actions
+
+### Push your project to GitHub
+
+First, log into github.com and create a new project repo and copy the remote URL.
+The URL will be in the format of `git remote add origin https://github.com/OWNER/REPOSITORY.git`.
+
+Git related commands are beyond the scope of this document but the steps are:
+
+- Initialize your project as a Git repo: `git init`.
+- Add and commit all the files to Git: `git -am 'my awesome project'`.
+- Add the remote (from above): `git remote add origin https://github.com/OWNER/REPOSITORY.git`.
+- Push the code: `git push`.
+
+### Add the CriticalUp Token to GitHub Action secrets
+
+The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in your GitHub repo's Settings.
+
+- Go to the 'Settings' tab of your GitHub repo.
+- Click 'Secrets and variables'.
+- Click 'Actions'.
+- Click 'New repository secret'.
+- Add Name as `CRITICALUP_TOKEN` and past the token from [Ferrocene Customer Portal] in the 'Secret' text area.
+
+### Create a simple GitHub Action
+
+An example of a fully working Github CI workflow file can be found in the workflow file [`build.yml`] of this demo project.
+
+- When no workflow file in your project exists, copy the `build.yml` into the folder `.github/workflows`, otherwise
+  copy the CI job `install-criticalup-build-run-my-app` into your existing workflow file.
+- Adapt the workflow if necessary, for example, to compile the project instead of run it.
+- We will use a single job so we don't need to cache anything. The job consists of multiple steps.
+- We will showcase only Ubuntu 20.04 in this exercise.
 
 ## References
 
