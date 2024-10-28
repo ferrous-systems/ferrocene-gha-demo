@@ -84,7 +84,13 @@ criticalup --help
 - Get the CriticalUp Token to authenticate
 - Add the CriticalUp Token to GitHub Action secrets
 
-In your GitHub Action you can use the secret now as:
+In the following command to authenticate, paste the token in place of `<CRITICALUP_TOKEN>`:
+
+```sh
+criticalup auth set <CRITICALUP_TOKEN>
+```
+
+**Note:** In your GitHub Action you can use the secret as:
 
 ```shell
 criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
@@ -171,6 +177,12 @@ The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in
 - Click 'Actions'.
 - Click 'New repository secret'.
 - Add Name as `CRITICALUP_TOKEN` and past the token from [Ferrocene Customer Portal] in the 'Secret' text area.
+
+In your GitHub Action, now you can use the secret as:
+
+```shell
+criticalup auth set ${{ secrets.CRITICALUP_TOKEN }}
+```
 
 ### Create a simple GitHub Action
 
