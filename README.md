@@ -1,6 +1,6 @@
 # Demo: Ferrocene and its toolchain within GitHub Action(s)
 
-This is a very simple demo.
+This is a simplified demo.
 
 ## Prerequisites
 
@@ -10,11 +10,11 @@ This is a very simple demo.
 
 ## Steps to use Ferrocene in your project
 
-Note: This section will assume that you have access to GitHub and already have a Rust project you want to use Ferrocene for.
+Note: This section will assume you have access to GitHub and already have a Rust project for which you want to use Ferrocene.
 
 ### Add a project manifest to your repo
 
-Ferrocene comes with its own toolchain and toolchain manager. Main tool is called [CriticalUp], which is Ferrocene's toolchain manager. 
+Ferrocene comes with its own toolchain and toolchain manager. The main tool is called [CriticalUp], which is Ferrocene's toolchain manager.
 
 Create a file in project root: `criticalup.toml` and paste the following content in it:
 
@@ -32,8 +32,9 @@ packages = [
 
 Some highlights about CriticalUp and the project manifest:
 
-- This is CritalUp project manifest file. It is usually named `criticalup.toml`. CriticalUp tries to find it within your project folder or its parent directory.
-  - You can override this and provide an explicit `--project` flag with path to your own `criticalup.toml` file for your project.
+- This is the CritalUp project manifest file. It is usually named `criticalup.toml`.
+  CriticalUp tries to find it within your project folder or its parent directory.
+  - You can override this and provide an explicit `--project` flag with a path to your `criticalup.toml` file for your project.
   - `criticalup install --project /path/to/my/manifest/criticalup.toml`.
 - Used to install Ferrocene and its releases for your project, and packages and dependencies for the release (like [rustup]).
 - Also used to build/run your project (like [cargo]).
@@ -51,7 +52,7 @@ Some highlights about CriticalUp and the project manifest:
 
 The CriticalUp Token you got from the [Ferrocene Customer Portal] must be set in your GitHub repo's Settings.
 
-- Go to 'Settings' tab of your GitHub repo.
+- Go to the 'Settings' tab of your GitHub repo.
 - Click 'Secrets and variables'.
 - Click 'Actions'.
 - Click 'New repository secret'.
@@ -63,7 +64,7 @@ An example of a fully working Github CI workflow file can be found in the workfl
 
 - When no workflow file in your project exists, copy the `build.yml` into the folder `.github/workflows`, otherwise
   copy the CI job `install-criticalup-build-run-my-app` into your existing workflow file.
-- Adapt the workflow if necessary, for example to compile the project instead of run it.
+- Adapt the workflow if necessary, for example, to compile the project instead of run it.
 - We will use a single job so we don't need to cache anything. The job consists of multiple steps.
 - We will showcase only Ubuntu 20.04 in this exercise.
 
@@ -124,7 +125,7 @@ The following command uses installed Ferrocene:
 criticalup run cargo run --release
 ```
 
-As you can see, you can simply pass `cargo` as a subcommand.
+As you can see, you can pass `cargo` as a subcommand.
 
 > See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`].
 
