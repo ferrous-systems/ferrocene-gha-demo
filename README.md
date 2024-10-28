@@ -32,7 +32,7 @@ packages = [
 
 Some highlights about CriticalUp and the project manifest:
 
-- This is the CritalUp project manifest file. It is usually named `criticalup.toml`.
+- This is the CriticalUp project manifest file. It is usually named `criticalup.toml`.
   CriticalUp tries to find it within your project folder or its parent directory.
   - You can override this and provide an explicit `--project` flag with a path to your `criticalup.toml` file for your project.
   - `criticalup install --project /path/to/my/manifest/criticalup.toml`.
