@@ -49,7 +49,7 @@ Some highlights about CriticalUp and the project manifest:
 - Also used to build/run your project (like [cargo]).
 - You can use `-${rustc-host}` suffix to automatically have CriticalUp fill the current architecture triple.
 
-### Get the CriticalUp Token to authenticate: get your token
+### Get the CriticalUp Token to authenticate
 
 - To install any Ferrocene product/toolchain, you will need to get a token from the [Ferrocene Customer Portal].
   This token can be created in your account.
