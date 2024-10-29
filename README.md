@@ -31,7 +31,7 @@ Create a file in project root: `criticalup.toml` and paste the following content
 manifest-version = 1
 
 [products.ferrocene]
-release = "stable-24.05.0"
+release = "stable-24.08.0"
 packages = [
     "rustc-${rustc-host}",
     "cargo-${rustc-host}",
