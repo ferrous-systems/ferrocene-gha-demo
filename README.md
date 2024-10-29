@@ -178,7 +178,6 @@ Open file `app/.cargo/config.toml`. The template will generate a lot of comments
 to make sure the uncommented content matches the following:
 
 ```toml
-[target.thumbv7m-none-eabi]
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 rustflags = []
 
