@@ -114,6 +114,9 @@ criticalup install
 
 ### Create new binary project
 
+**Note:** This section is for regular x86_64 binary project. If you are doing an embedded project,
+then please ignore this section and continue with the next section: "Alternatively create new embedded project".
+
 Once the toolchain is installed, you will have `rustc`, `cargo`, and `rust-std` available in the toolchain.
 
 We will run a command to create a new binary project:
@@ -133,14 +136,86 @@ Note how we pass `cargo init` to the `criticalup run` command.
 
 ### Alternatively create new embedded project
 
-**Note:** We will assume this embedded project is for ARM Cortex-M microcontrollers
+**Note:** This section is an alternative to the prior section. If you are not doing an embedded, please ignore this section.
+
+We will assume this embedded project is for ARM Cortex-M microcontrollers
 and will use the [template from rust-embedded project](https://github.com/rust-embedded/cortex-m-quickstart).
+
+#### Project manifest changes for embedded
+
+The `criticalup.toml` needs update to be able to cross-compile for your embedded architecture.
+Here's what you can use for our demo:
+
+```toml
+manifest-version = 1
+
+[products.ferrocene]
+release = "stable-24.08.0"
+packages = [
+    "rustc-${rustc-host}",
+    "cargo-${rustc-host}",
+    "rust-std-${rustc-host}",
+    "rust-std-thumbv7em-none-eabi",
+    "rust-std-thumbv7em-none-eabihf"
+]
+```
+
+#### Generate new embedded project from template
 
 ```sh
 criticalup run cargo generate --git https://github.com/rust-embedded/cortex-m-quickstart
 ```
 
-**Caveat:** This will generate a project directory inside `ferrocene-demo` since we are using a template.
+A few things to note:
+
+- The template will ask you to provide a project name.
+- This will generate a project directory with the provided name, inside `ferrocene-demo` since we are using a template.
+- We will use the project name: `app`.
+
+#### Update Cargo config: `app/.cargo/config.toml`
+
+Open file `app/.cargo/config.toml`. The template will generate a lot of comments in the file but we want
+to make sure the uncommented content matches the following:
+
+```toml
+[target.thumbv7m-none-eabi]
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+rustflags = []
+
+[build]
+target = "thumbv7em-none-eabihf"     # Cortex-M4F and Cortex-M7F (with FPU)
+```
+
+#### Update the memory layout: `app/memory.x`
+
+Open file `app/memory.x` file and paste the following content:
+
+```
+MEMORY
+{
+  /* NOTE 1 K = 1 KiBi = 1024 bytes */
+  FLASH : ORIGIN = 0x08000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 40K
+}
+```
+
+### Build your app using CriticalUp
+
+The following command uses installed Ferrocene:
+
+```shell
+criticalup run cargo build --release
+```
+
+As you can see, you can pass `cargo` as a subcommand. Also, note that the system recognizes
+the architecture you want to build for (in case of embedded) and cross-compiles for you. You
+can check this by simple using the `file` command on Linux:
+
+```sh
+$ file target/thumbv7em-none-eabihf/release/app
+
+target/thumbv7em-none-eabihf/release/app: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+```
 
 ### Run your app using CriticalUp
 
@@ -149,8 +224,6 @@ The following command uses installed Ferrocene:
 ```shell
 criticalup run cargo run --release
 ```
-
-As you can see, you can pass `cargo` as a subcommand.
 
 > For GitHub Actions: See the step 'Run my app via Ferrocene and its toolchain' in [`build.yml`].
 
